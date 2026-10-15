@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Editorial Hero Banner -->
+<section class="max-w-7xl mx-auto px-6 pt-6 pb-8">
+    <div class="relative rounded-[2rem] overflow-hidden min-h-[540px] flex items-end md:items-center justify-center bg-blush border border-petal shadow-sm">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1600&q=80" 
+             class="absolute inset-0 w-full h-full object-cover object-center opacity-90" alt="Editorial Collection">
+        <div class="absolute inset-0 bg-gradient-to-t from-espresso/50 via-espresso/15 to-transparent"></div>
+
+        <div class="relative z-10 text-center text-white px-6 py-12 max-w-4xl mx-auto">
+            <span class="inline-block bg-cream text-espresso text-[10px] uppercase tracking-[0.25em] px-4 py-1.5 rounded-full font-semibold mb-4 shadow-sm -rotate-2">
+                New Collection
+            </span>
+            <h1 class="font-serif text-6xl md:text-8xl font-normal tracking-tight leading-none mb-6 drop-shadow-sm">
+                SOFT &amp; SERENE
+            </h1>
+            <p class="text-sm md:text-base text-cream/95 max-w-md mx-auto mb-8 font-light">
+                Dreamy silhouettes, featherlight knits, and pastel tones crafted to bring warmth to your everyday wardrobe.
+            </p>
+            <a href="#favorites" class="inline-block bg-petal hover:bg-rosewood text-espresso hover:text-white px-9 py-3.5 rounded-full text-xs uppercase tracking-[0.2em] font-semibold transition shadow-md">
+                Explore The Closet
+            </a>
+        </div>
+    </div>
+
+    <!-- Dual Pill Bar -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <a href="#favorites" class="text-center py-3.5 rounded-full border border-espresso/30 text-xs uppercase tracking-[0.2em] font-medium hover:bg-petal/50 transition">
+            Full Catalog
+        </a>
+        <a href="#story" class="text-center py-3.5 rounded-full border border-espresso/30 text-xs uppercase tracking-[0.2em] font-medium hover:bg-petal/50 transition">
+            The Pastel Atelier
+        </a>
+    </div>
+</section>
+
+<!-- Category Showcase -->
+<section id="categories" class="max-w-7xl mx-auto px-6 py-14">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        {% for cat in categories %}
+        <a href="?category={{ cat.slug }}#favorites" class="group text-center">
+            <div class="aspect-[4/5] rounded-[2rem] bg-blush/70 border border-petal overflow-hidden mb-4 flex items-center justify-center p-6 shadow-sm group-hover:shadow-md transition">
+                {% if cat.image %}
+                <img src="{{ cat.image.url }}" alt="{{ cat.name }}" class="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition duration-500">
+                {% else %}
+                <div class="text-center space-y-2">
+                    <span class="block font-serif italic text-rosewood text-lg">Collection</span>
+                    <span class="block font-serif text-3xl text-espresso tracking-wide">{{ cat.name }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <h3 class="font-serif text-2xl tracking-wider uppercase text-espresso group-hover:text-berry transition">{{ cat.name }}</h3>
+        </a>
+        {% empty %}
+        <div class="text-center">
+            <div class="aspect-[4/5] rounded-[2rem] bg-blush border border-petal overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Sweaters">
+            </div>
+            <h3 class="font-serif text-2xl uppercase tracking-wider">Sweaters</h3>
+        </div>
+        <div class="text-center">
+            <div class="aspect-[4/5] rounded-[2rem] bg-blush border border-petal overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Dresses">
+            </div>
+            <h3 class="font-serif text-2xl uppercase tracking-wider">Dresses</h3>
+        </div>
+        <div class="text-center">
+            <div class="aspect-[4/5] rounded-[2rem] bg-blush border border-petal overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=700&q=80" class="w-full h-full object-cover" alt="Cardigans">
+            </div>
+            <h3 class="font-serif text-2xl uppercase tracking-wider">Cardigans</h3>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Split Pastel Story Section -->
+<section id="story" class="max-w-7xl mx-auto px-6 py-8">
+    <div class="rounded-[2.5rem] bg-blush border border-petal overflow-hidden grid grid-cols-1 md:grid-cols-12 items-center">
+        <div class="md:col-span-6 p-10 md:p-16 space-y-6">
+            <span class="inline-block bg-petal text-espresso px-5 py-2 rounded-full text-[11px] uppercase tracking-[0.2em] font-semibold">
+                Get To Know Us
+            </span>
+            <h2 class="font-serif text-3xl md:text-5xl leading-tight font-normal text-espresso">
+                Delicate threads &amp; inspiration in every pattern. Handmade clothes in pastel shades.
+            </h2>
+            <p class="text-sm text-espresso/75 leading-relaxed">
+                Every piece in our studio is thoughtfully designed to feel like a second skin—combining soft knit textures, romantic silhouettes, and timeless pastel palettes.
+            </p>
+            <a href="#favorites" class="inline-block bg-rosewood text-white px-7 py-3 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-berry transition">
+                Discover Our Pieces
+            </a>
+        </div>
+        <div class="md:col-span-6 h-full min-h-[380px]">
+            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1000&q=80" 
+                 alt="Our Atelier" class="w-full h-full object-cover">
+        </div>
+    </div>
+</section>
+
+<!-- Product Grid -->
+<section id="favorites" class="max-w-7xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+        <span class="text-xs uppercase tracking-[0.25em] text-rosewood font-semibold block mb-2">Curated Closet</span>
+        <h2 class="font-serif text-4xl md:text-5xl font-normal uppercase tracking-wide">
+            {% if active_category %}{{ active_category.name }}{% else %}Your Favourites{% endif %}
+        </h2>
+        {% if active_category %}
+        <a href="{% url 'catalog:home' %}#favorites" class="inline-block mt-3 text-xs underline text-berry">View All Pieces</a>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% for product in featured_products %}
+        <div class="group bg-white/80 rounded-[1.75rem] p-4 border border-petal/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+            <div>
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-blush relative mb-4">
+                    {% if product.images.first %}
+                    <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center font-serif italic text-rosewood text-xl">Aurelia Piece</div>
+                    {% endif %}
+                    <a href="{{ product.get_absolute_url }}" class="absolute inset-0"></a>
+                </div>
+                <div class="text-center px-2">
+                    <p class="text-[10px] uppercase tracking-widest text-espresso/50 mb-1">{{ product.category.name }}</p>
+                    <h3 class="font-serif text-xl font-medium text-espresso">
+                        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                    </h3>
+                    <p class="text-sm font-semibold text-berry mt-1">${{ product.price }}</p>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-2">
+                <a href="{{ product.get_absolute_url }}" class="block w-full text-center bg-petal/80 hover:bg-rosewood text-espresso hover:text-white py-2.5 rounded-full text-[11px] uppercase tracking-[0.2em] font-semibold transition">
+                    Select Size
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-4 bg-blush/60 border border-petal rounded-3xl p-12 text-center space-y-3">
+            <p class="font-serif text-2xl text-espresso">Your boutique rack is ready for its first pieces!</p>
+            <p class="text-xs text-espresso/70">Log into <a href="/admin/" class="underline font-semibold text-berry">/admin/</a> to add Categories and Products with photos.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

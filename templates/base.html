@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ lang|default:'uk' }}" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if lang == 'en' %}CALMELLE | Girls Store & Pyjamas{% else %}CALMELLE | Магазин одягу та піжам{% endif %}</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF7F5',
+                        blush: '#FCEEF2',
+                        petal: '#F6D5DF',
+                        rosewood: '#E295AB',
+                        berry: '#D16B86',
+                        espresso: '#2B2325',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream text-espresso font-sans antialiased selection:bg-petal selection:text-espresso">
+
+    <!-- Announcement Bar -->
+    <div class="bg-petal/70 text-espresso text-center py-2 px-4 text-[11px] tracking-[0.15em] uppercase font-medium border-b border-rosewood/20">
+        {% if lang == 'en' %}✨ ESTD 2026 · Free shipping across Ukraine over 3000 UAH ✨{% else %}✨ ESTD 2026 · Безкоштовна доставка по Україні від 3000 грн ✨{% endif %}
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-cream/90 backdrop-blur-md border-b border-petal/60">
+        <div class="max-w-full mx-auto px-8 h-24 flex items-center justify-between">
+            
+            <!-- Calmelle Logo & Brand -->
+            <a href="{% url 'catalog:home' %}" class="flex items-center space-x-3">
+                <img src="{% static 'logo.png' %}" alt="Calmelle" class="h-14 md:h-16 w-auto object-contain rounded-full border border-petal shadow-sm">
+                <span class="font-serif text-3xl md:text-4xl tracking-wide font-semibold text-espresso">Calmelle</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs uppercase tracking-[0.15em] font-medium">
+                <a href="{% url 'catalog:home' %}" class="hover:text-berry transition">{% if lang == 'en' %}Catalog{% else %}Каталог{% endif %}</a>
+                <a href="/admin/" class="text-[11px] uppercase tracking-widest text-espresso/60 hover:text-berry transition">Admin</a>
+            </nav>
+
+            <!-- Right Controls: Language Switcher & Bag -->
+            <div class="flex items-center space-x-4">
+                <!-- Language Switcher Toggle -->
+                <div class="flex space-x-1.5 text-xs font-semibold tracking-widest border border-petal rounded-full px-3.5 py-1.5 bg-white/60 shadow-sm">
+                    <a href="{% url 'catalog:set_language' 'uk' %}" class="{% if lang != 'en' %}text-berry underline font-bold{% else %}text-espresso/40{% endif %}">UA</a>
+                    <span class="text-espresso/30">/</span>
+                    <a href="{% url 'catalog:set_language' 'en' %}" class="{% if lang == 'en' %}text-berry underline font-bold{% else %}text-espresso/40{% endif %}">EN</a>
+                </div>
+
+                <button onclick="document.getElementById('bag-drawer').classList.remove('translate-x-full')" 
+                        class="bg-petal hover:bg-rosewood hover:text-white text-espresso px-6 py-3 rounded-full text-xs uppercase tracking-widest font-medium transition shadow-sm">
+                    {% if lang == 'en' %}Bag{% else %}Кошик{% endif %} (<span id="bag-count">{{ bag|length }}</span>)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- Footer -->
+    <footer class="bg-blush border-t border-petal pt-16 pb-12 px-8 mt-20">
+        <div class="max-w-full mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left space-y-1">
+                <p class="font-serif text-3xl font-medium">Calmelle <span class="text-rosewood text-xl">GIRLS STORE</span></p>
+                <p class="text-xs text-espresso/60">
+                    {% if lang == 'en' %}Pyjamas, cardigans, suits, dresses & little gifts.{% else %}Піжами, кардигани, костюми, сукні та маленькі подарунки.{% endif %}
+                </p>
+                <p class="text-[11px] text-espresso/50">ФОП · {% if lang == 'en' %}All rights reserved{% else %}Всі права захищені{% endif %}</p>
+            </div>
+            <div class="text-xs uppercase tracking-widest font-medium text-espresso/70">
+                <span>💳 Visa/Mastercard · 📦 Нова Пошта (Післяплата)</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Slide-Out Bag Drawer -->
+    <div id="bag-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-cream shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out border-l border-petal">
+        <div class="p-6 h-full flex flex-col justify-between">
+            <div class="flex items-center justify-between pb-4 border-b border-petal">
+                <h3 class="font-serif text-2xl italic">{% if lang == 'en' %}Your Selection{% else %}Ваш вибір{% endif %}</h3>
+                <button onclick="document.getElementById('bag-drawer').classList.add('translate-x-full')" class="text-espresso/50 hover:text-espresso text-lg">✕</button>
+            </div>
+            <div id="bag-contents" class="flex-grow py-4 overflow-y-auto">
+                {% include 'bag/bag_drawer.html' %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

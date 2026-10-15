@@ -1,0 +1,42 @@
+<script>
+    var bagBadge = document.getElementById('bag-count');
+    if (bagBadge) { bagBadge.innerText = "{{ bag|length }}"; }
+</script>
+
+{% if bag|length > 0 %}
+    <div class="divide-y divide-petal">
+        {% for item in bag %}
+        <div class="py-4 flex justify-between items-center text-sm">
+            <div>
+                <p class="font-serif text-lg font-medium text-espresso">{{ item.variant.product.title }}</p>
+                <p class="text-xs text-espresso/60">{{ item.variant.color }} · Size {{ item.variant.size }} × {{ item.quantity }}</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="font-semibold text-berry">${{ item.total_price }}</span>
+                <button hx-post="{% url 'bag:bag_remove' item.variant.id %}"
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        hx-target="#bag-contents"
+                        hx-swap="innerHTML"
+                        class="text-xs text-espresso/40 hover:text-berry">
+                    ✕
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-8 pt-4 border-t border-petal space-y-4">
+        <div class="flex justify-between font-serif text-xl">
+            <span>Subtotal</span>
+            <span class="font-semibold text-berry">${{ bag.get_total_price }}</span>
+        </div>
+        <button onclick="alert('Ready to connect Stripe checkout!')" class="block text-center w-full bg-rosewood hover:bg-berry text-white py-3.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em] transition shadow-sm">
+            Proceed to Checkout
+        </button>
+    </div>
+{% else %}
+    <div class="text-center py-16 space-y-2">
+        <p class="font-serif italic text-xl text-rosewood">Your bag is currently empty</p>
+        <p class="text-xs text-espresso/50">Explore our pastel knitwear &amp; dresses to add pieces.</p>
+    </div>
+{% endif %}

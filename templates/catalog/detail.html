@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-12">
+    <a href="{% url 'catalog:home' %}#favorites" class="inline-flex items-center text-xs uppercase tracking-widest text-espresso/60 hover:text-berry mb-8">
+        ← Back to Collection
+    </a>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start bg-white/70 p-6 md:p-10 rounded-[2.5rem] border border-petal shadow-sm">
+        <div class="space-y-4">
+            <div class="aspect-[3/4] rounded-[1.75rem] overflow-hidden bg-blush border border-petal">
+                {% if product.images.first %}
+                <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center font-serif italic text-rosewood text-2xl">Aurelia Piece</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="space-y-6 md:py-4">
+            <div>
+                <span class="inline-block bg-blush border border-petal px-3.5 py-1 rounded-full text-[10px] uppercase tracking-widest text-berry font-semibold mb-3">
+                    {{ product.category.name }}
+                </span>
+                <h1 class="font-serif text-4xl md:text-5xl font-normal text-espresso">{{ product.title }}</h1>
+                <p class="font-serif text-2xl text-berry font-semibold mt-3">${{ product.price }}</p>
+            </div>
+
+            <div class="text-sm text-espresso/75 leading-relaxed border-y border-petal py-5">
+                {{ product.description|linebreaks }}
+            </div>
+
+            {% if variants %}
+            <form hx-post="{% url 'bag:bag_add' %}" 
+                  hx-target="#bag-contents" 
+                  hx-swap="innerHTML"
+                  hx-on::after-request="document.getElementById('bag-drawer').classList.remove('translate-x-full')">
+                {% csrf_token %}
+                <div class="mb-6">
+                    <label class="block text-xs uppercase tracking-widest font-semibold mb-3">Select Size &amp; Shade</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {% for variant in variants %}
+                        <label class="border border-petal rounded-2xl p-3 text-center cursor-pointer hover:border-rosewood has-[:checked]:border-berry has-[:checked]:bg-blush transition">
+                            <input type="radio" name="variant_id" value="{{ variant.id }}" class="hidden" {% if forloop.first %}checked{% endif %}>
+                            <span class="block text-sm font-semibold text-espresso">{{ variant.size }}</span>
+                            <span class="block text-[11px] text-espresso/60">{{ variant.color }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-petal hover:bg-rosewood text-espresso hover:text-white py-4 rounded-full text-xs font-semibold tracking-[0.2em] uppercase transition shadow-sm">
+                    Add To Bag
+                </button>
+            </form>
+            {% else %}
+            <div class="p-4 bg-blush rounded-2xl text-xs tracking-widest uppercase text-berry text-center font-semibold">
+                Sold Out — Add Variants in Admin
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
